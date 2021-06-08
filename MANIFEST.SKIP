@@ -1,0 +1,9 @@
+^Makefile(.old)?$
+^MANIFEST.(SKIP|bak)$
+^MYMETA\.(json|yml)$
+\.exists$
+\.tar(\.gz)?$
+^\.git/.*$
+^\.gitignore$
+^\.DS_Store$
+
