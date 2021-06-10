@@ -144,6 +144,7 @@ sub ColStat ( $$ ) {
   sub minmaxstr ( $ ) ; # 配列参照から、最小値最大値を取り出す 
   my %thash = %{ $_[0] } ; #$colvals -> [$_] } ;  # 各列について、値の度数のハッシュをここで格納。
   my @vals  = keys %thash ;  # その列で1回以上出現した具体的なデータ値を可能。
+  my $last = join $o{c} , minmaxstr( \@{[map { length decode ($_) } @vals ]}  ) ; # 桁数範囲
   push my @out, $_ + 1, scalar @vals, aveft ( \%thash , \@vals ), $_[1]//($_+1) ; # 列番号,濃度, 平均値, 列名(//列番号)
   my @skeys = splice @{[ sort{ $thash{$b} <=> $thash{$a} } @vals ]} , 0, $o{g} ; #高速化の対象か? 
   if ( exists $o{v} ) { @vals = map { substr $_,0,$o{v} } @vals ; @skeys = map { substr $_,0,$o{v} } @skeys } ; # <-- -
@@ -155,7 +156,7 @@ sub ColStat ( $$ ) {
   push @out , join$o{c}, @skeys ; # 最頻値いくつか
   push @out , join $o{c}, MultSpec \@kcct1, \%cct ; # 頻度の高い方
   push @out , (@kcct2? @kcct? $o{r} : $o{c} : '' ) . (join $o{c} , MultSpec \@kcct2, \%cct)  ; # 頻度の低い方
-  push @out , join $o{c} , minmaxstr( \@{[map { length decode ($_) } @vals ]}  ) ; # 桁数範囲
+  push @out , $last ; # 桁数範囲
   AlignOut @out; # <-- 元の入力の1列の情報が、出力1行に相当する。
   return ;
 }
